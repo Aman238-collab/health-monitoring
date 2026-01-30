@@ -8,7 +8,7 @@ import fitz # PyMuPDF
 logger = logging.getLogger(__name__)
 
 # NOTE: If tesseract is not in your PATH, you might need to specify the path:
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 def preprocess_image(image: Image.Image) -> Image.Image:
     """

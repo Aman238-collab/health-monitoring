@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 from app.db.database import SessionLocal
 from app.db.models import Notification
-# from app.telegram.bot import send_reminder
+from app.telegram.bot import send_reminder
 
 logger = logging.getLogger(__name__)
 
@@ -40,9 +40,9 @@ async def process_notifications():
                  notification.status = "FAILED"
                  continue
 
-            # success = await send_reminder(chat_id, notification.message)
-            logger.info(f"Simulating sending Telegram message to {chat_id}: {notification.message}")
-            success = True
+            success = await send_reminder(chat_id, notification.message)
+            # logger.info(f"Simulating sending Telegram message to {chat_id}: {notification.message}")
+            # success = True
             
             if success:
                 notification.status = "SENT"

@@ -1,0 +1,111 @@
+{
+    "Malaria": [
+        {
+            "medicine_name": "Chloroquine",
+            "dosage": "500 mg",
+            "times": [
+                "08:00",
+                "20:00"
+            ],
+            "instructions": "after food"
+        },
+        {
+            "medicine_name": "Paracetamol",
+            "dosage": "650 mg",
+            "times": [
+                "13:00"
+            ],
+            "instructions": "if fever persists"
+        }
+    ],
+    "Dengue": [
+        {
+            "medicine_name": "Paracetamol",
+            "dosage": "500 mg",
+            "times": [
+                "08:00",
+                "14:00",
+                "20:00"
+            ],
+            "instructions": "for fever and pain"
+        },
+        {
+            "medicine_name": "Papaya Leaf Extract",
+            "dosage": "10 ml",
+            "times": [
+                "08:00",
+                "20:00"
+            ],
+            "instructions": "before food"
+        }
+    ],
+    "Jaundice": [
+        {
+            "medicine_name": "Liv-52",
+            "dosage": "2 tablets",
+            "times": [
+                "08:00",
+                "13:00",
+                "20:00"
+            ],
+            "instructions": "before food"
+        },
+        {
+            "medicine_name": "Vitamin B Complex",
+            "dosage": "1 tablet",
+            "times": [
+                "13:00"
+            ],
+            "instructions": "after food"
+        }
+    ],
+    "Typhoid": [
+        {
+            "medicine_name": "Azithromycin",
+            "dosage": "500 mg",
+            "times": [
+                "10:00"
+            ],
+            "instructions": "once daily for 7 days"
+        },
+        {
+            "medicine_name": "Paracetamol",
+            "dosage": "650 mg",
+            "times": [
+                "08:00",
+                "14:00",
+                "20:00"
+            ],
+            "instructions": "SOS for fever"
+        }
+    ],
+    "Corona": [
+        {
+            "medicine_name": "Vitamin C",
+            "dosage": "500 mg",
+            "times": [
+                "08:00",
+                "20:00"
+            ],
+            "instructions": "chewable"
+        },
+        {
+            "medicine_name": "Zinc",
+            "dosage": "50 mg",
+            "times": [
+                "13:00"
+            ],
+            "instructions": "after food"
+        },
+        {
+            "medicine_name": "Dolo 650",
+            "dosage": "650 mg",
+            "times": [
+                "08:00",
+                "14:00",
+                "20:00"
+            ],
+            "instructions": "if fever > 100F"
+        }
+    ]
+}
