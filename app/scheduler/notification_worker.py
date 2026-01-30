@@ -14,7 +14,7 @@ async def process_notifications():
     """
     db: Session = SessionLocal()
     try:
-        now = datetime.utcnow() # match DB utcnow
+        now = datetime.now() # match local time for Windows-based app
         # Fetch notifications that are PENDING and due
         pending_notifications = db.query(Notification).filter(
             Notification.status == "PENDING",

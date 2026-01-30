@@ -18,7 +18,7 @@ class Prescription(Base):
     id = Column(String, primary_key=True, index=True) # UUID
     patient_id = Column(String, ForeignKey("patients.id"))
     doctor_note = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now)
 
     patient = relationship("Patient", back_populates="prescriptions")
     medications = relationship("Medication", back_populates="prescription")

@@ -15,6 +15,12 @@ import os
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
+# Ensure uploads directory exists
+UPLOAD_DIR = "uploads"
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
+    logger.info(f"Created directory: {UPLOAD_DIR}")
+
 @router.post("/prescriptions/")
 async def upload_prescription(
     file: UploadFile = File(...),
@@ -88,6 +94,18 @@ async def upload_prescription(
         try:
             logger.info("Starting OCR processing...")
             content = await file.read()
+            
+            # --- Auto-Save Implementation ---
+            # Save file to uploads folder with timestamp
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            safe_filename = f"{timestamp}_{file.filename}"
+            file_path = os.path.join(UPLOAD_DIR, safe_filename)
+            
+            with open(file_path, "wb") as f:
+                f.write(content)
+            logger.info(f"File auto-saved to: {file_path}")
+            # --- End Auto-Save ---
+
             logger.info(f"File read. Size: {len(content)} bytes. Starting OCR...")
             text = extract_text(content)
             if not text:
@@ -131,8 +149,8 @@ async def upload_prescription(
                 dose=med_data.get("dosage"),
                 # frequency=med_data.get("frequency"), # If your model has this field. If not, skip or add to doctor_note
                 # For MVP we might not have start/end date in regex parser yet, so leave None or default
-                start_date=datetime.utcnow(), 
-                end_date=datetime.utcnow() + timedelta(days=5) # Default 5 days course
+                start_date=datetime.now(), 
+                end_date=datetime.now() + timedelta(days=5) # Default 5 days course
             )
             db.add(medication)
             
@@ -143,7 +161,7 @@ async def upload_prescription(
                 # MVP: Schedule for today/tomorrow at that time
                 try:
                     hour, minute = map(int, time_str.split(':'))
-                    now = datetime.utcnow()
+                    now = datetime.now()
                     send_at = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
                     
                     if send_at < now:
@@ -162,9 +180,23 @@ async def upload_prescription(
 
         db.commit()
         
-        # Immediate Telegram Update
+        # Immediate Telegram Update - Detailed Summary
         if patient.telegram_chat_id:
-            msg = f"Prescription processed successfully.\nFound {len(extracted_medications)} medications."
+            msg = "✅ *Prescription Digitized Successfully*\n\n"
+            msg += f"Found {len(extracted_medications)} medications:\n"
+            
+            for med in extracted_medications:
+                name = med.get('medicine_name', 'Unknown')
+                dose = med.get('dosage', 'N/A')
+                times = ", ".join(med.get('times', []))
+                instr = med.get('instructions', '')
+                
+                msg += f"\n💊 *{name}*\n"
+                msg += f"   - Dose: {dose}\n"
+                msg += f"   - Times: {times}\n"
+                if instr:
+                    msg += f"   - Tip: {instr}\n"
+            
             await send_reminder(patient.telegram_chat_id, msg)
         
         logger.info(f"Prescription {prescription_id} processed and saved successfully.")
